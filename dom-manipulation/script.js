@@ -106,6 +106,13 @@ async function fetchServerQuotes() {
     category: 'server'
   }));
 }
+setInterval(syncWithServer, 10000); // every 10 seconds
+
+async function syncWithServer() {
+  const serverQuotes = await fetchServerQuotes();
+  resolveConflicts(serverQuotes);
+}
+
 
 
 function resolveConflicts(serverQuotes) {
