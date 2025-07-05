@@ -38,25 +38,44 @@ function updateCategoryOptions(newCategory) {
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 let quotes = JSON.parse(localStorage.getItem('quotes')) || [];
 let lastViewedQuoteIndex = sessionStorage.getItem('lastViewedQuoteIndex') || 0;
+let lastSelectedCategory = localStorage.getItem('lastSelectedCategory') || 'all';
 
 function displayQuote() {
-    if (quotes.length === 0) {
+    const filteredQuotes = filterByCategory(quotes, lastSelectedCategory);
+    if (filteredQuotes.length === 0) {
         document.getElementById('quoteDisplay').innerText = "No quotes available.";
         return;
     }
-    const quote = quotes[lastViewedQuoteIndex];
-    document.getElementById('quoteDisplay').innerText = quote;
+    const quote = filteredQuotes[lastViewedQuoteIndex % filteredQuotes.length];
+    document.getElementById('quoteDisplay').innerText = quote.text;
 }
 
 function saveQuotes() {
     localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
+function populateCategories() {
+    const categories = new Set(quotes.map(quote => quote.category));
+    const categoryFilter = document.getElementById('categoryFilter');
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.innerText = category;
+        categoryFilter.appendChild(option);
+    });
+}
+
+function filterByCategory(quotes, category) {
+    return category === 'all' ? quotes : quotes.filter(quote => quote.category === category);
+}
+
 document.getElementById('newQuoteBtn').addEventListener('click', function() {
-    const newQuote = prompt("Enter a new quote:");
-    if (newQuote) {
-        quotes.push(newQuote);
+    const newQuoteText = prompt("Enter a new quote:");
+    const newQuoteCategory = prompt("Enter the category for this quote:");
+    if (newQuoteText && newQuoteCategory) {
+        quotes.push({ text: newQuoteText, category: newQuoteCategory });
         saveQuotes();
+        populateCategories(); // Update categories
         displayQuote();
     }
 });
@@ -73,25 +92,29 @@ document.getElementById('exportBtn').addEventListener('click', function() {
     URL.revokeObjectURL(url);
 });
 
-// Import function
 function importFromJsonFile(event) {
     const fileReader = new FileReader();
     fileReader.onload = function(event) {
         const importedQuotes = JSON.parse(event.target.result);
         quotes.push(...importedQuotes);
         saveQuotes();
+        populateCategories(); // Update categories
         displayQuote();
         alert('Quotes imported successfully!');
     };
     fileReader.readAsText(event.target.files[0]);
 }
 
-// Load the last viewed quote
+function filterQuotes() {
+    lastSelectedCategory = document.getElementById('categoryFilter').value;
+    localStorage.setItem('lastSelectedCategory', lastSelectedCategory);
+    displayQuote();
+}
+
 function loadLastViewedQuote() {
-    if (quotes.length > 0) {
-        lastViewedQuoteIndex = (lastViewedQuoteIndex % quotes.length);
-        displayQuote();
-    }
+    populateCategories();
+    document.getElementById('categoryFilter').value = lastSelectedCategory;
+    displayQuote();
 }
 
 window.addEventListener('load', function() {
