@@ -83,7 +83,7 @@ document.getElementById('newQuoteBtn').addEventListener('click', function() {
     }
 });
 
-function syncWithServer() {
+function fetchQuotesFromServer() {
     // Simulate fetching data from the server
     fetch(SERVER_URL)
         .then(response => response.json())
