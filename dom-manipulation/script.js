@@ -95,7 +95,7 @@ function fetchQuotesFromServer() {
         })
         .catch(error => console.error('Error syncing with server:', error));
 }
-async function postQuoteToServer(quote) {
+async function syncQuotes(quote) {
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
       method: 'POST',
