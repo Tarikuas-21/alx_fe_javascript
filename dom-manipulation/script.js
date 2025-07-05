@@ -95,6 +95,18 @@ function fetchQuotesFromServer() {
         })
         .catch(error => console.error('Error syncing with server:', error));
 }
+async function fetchServerQuotes() {
+  // Simulated fetch from server
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+  const serverQuotes = await response.json();
+
+  // Convert to our quote format
+  return serverQuotes.map(post => ({
+    text: post.title,
+    category: 'server'
+  }));
+}
+
 
 function resolveConflicts(serverQuotes) {
     // Simple conflict resolution strategy
