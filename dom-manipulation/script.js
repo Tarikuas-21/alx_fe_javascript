@@ -36,3 +36,67 @@ function updateCategoryOptions(newCategory) {
 }
 
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+let quotes = JSON.parse(localStorage.getItem('quotes')) || [];
+let lastViewedQuoteIndex = sessionStorage.getItem('lastViewedQuoteIndex') || 0;
+
+function displayQuote() {
+    if (quotes.length === 0) {
+        document.getElementById('quoteDisplay').innerText = "No quotes available.";
+        return;
+    }
+    const quote = quotes[lastViewedQuoteIndex];
+    document.getElementById('quoteDisplay').innerText = quote;
+}
+
+function saveQuotes() {
+    localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
+document.getElementById('newQuoteBtn').addEventListener('click', function() {
+    const newQuote = prompt("Enter a new quote:");
+    if (newQuote) {
+        quotes.push(newQuote);
+        saveQuotes();
+        displayQuote();
+    }
+});
+
+document.getElementById('exportBtn').addEventListener('click', function() {
+    const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'quotes.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+});
+
+// Import function
+function importFromJsonFile(event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function(event) {
+        const importedQuotes = JSON.parse(event.target.result);
+        quotes.push(...importedQuotes);
+        saveQuotes();
+        displayQuote();
+        alert('Quotes imported successfully!');
+    };
+    fileReader.readAsText(event.target.files[0]);
+}
+
+// Load the last viewed quote
+function loadLastViewedQuote() {
+    if (quotes.length > 0) {
+        lastViewedQuoteIndex = (lastViewedQuoteIndex % quotes.length);
+        displayQuote();
+    }
+}
+
+window.addEventListener('load', function() {
+    loadLastViewedQuote();
+    window.addEventListener('beforeunload', function() {
+        sessionStorage.setItem('lastViewedQuoteIndex', lastViewedQuoteIndex);
+    });
+});
