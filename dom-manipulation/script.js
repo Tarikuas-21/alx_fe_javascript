@@ -95,17 +95,25 @@ function fetchQuotesFromServer() {
         })
         .catch(error => console.error('Error syncing with server:', error));
 }
-async function fetchServerQuotes() {
-  // Simulated fetch from server
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
-  const serverQuotes = await response.json();
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(quote)
+    });
 
-  // Convert to our quote format
-  return serverQuotes.map(post => ({
-    text: post.title,
-    category: 'server'
-  }));
+    const result = await response.json();
+    console.log('Quote sent to server:', result);
+    notifyUser('Quote successfully posted to server.');
+  } catch (error) {
+    console.error('Error posting quote:', error);
+    notifyUser('Failed to post quote to server.');
+  }
 }
+
 setInterval(syncWithServer, 10000); // every 10 seconds
 
 async function syncWithServer() {
