@@ -1,65 +1,29 @@
 let quotes = [
-  { text: "The best way to predict the future is to invent it.", category: "Inspiration" },
-  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-  { text: "Do or do not. There is no try.", category: "Motivation" }
+    { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
+    { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+    { text: "Get busy living or get busy dying.", category: "Life" },
+    { text: "You only live once, but if you do it right, once is enough.", category: "Life" },
+    { text: "The best way to predict your future is to create it.", category: "Motivation" }
 ];
 
-const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-const categorySelect = document.getElementById('categorySelect');
-
 function showRandomQuote() {
-  const selectedCategory = categorySelect.value;
-  let filteredQuotes = quotes;
-
-  if (selectedCategory !== 'all') {
-    filteredQuotes = quotes.filter(q => q.category.toLowerCase() === selectedCategory.toLowerCase());
-  }
-
-  if (filteredQuotes.length === 0) {
-    quoteDisplay.innerText = 'No quotes available in this category.';
-    return;
-  }
-
-  const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-  const quote = filteredQuotes[randomIndex];
-
-  quoteDisplay.innerText = `"${quote.text}" - [${quote.category}]`;
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const quote = quotes[randomIndex];
+    document.getElementById("quoteDisplay").innerText = `"${quote.text}" - ${quote.category}`;
 }
-
 
 function addQuote() {
-  const textInput = document.getElementById('newQuoteText');
-  const categoryInput = document.getElementById('newQuoteCategory');
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
+    const newQuoteText = document.getElementById("newQuoteText").value;
+    const newQuoteCategory = document.getElementById("newQuoteCategory").value;
 
-  if (!text || !category) {
-    alert('Please enter both quote and category.');
-    return;
-  }
-
-  const newQuote = { text, category };
-  quotes.push(newQuote);
-  updateCategoryOptions(category);
-
-  textInput.value = '';
-  categoryInput.value = '';
-  alert('Quote added successfully!');
+    if (newQuoteText && newQuoteCategory) {
+        quotes.push({ text: newQuoteText, category: newQuoteCategory });
+        document.getElementById("newQuoteText").value = '';
+        document.getElementById("newQuoteCategory").value = '';
+        alert("Quote added!");
+    } else {
+        alert("Please fill in both fields.");
+    }
 }
 
-
-function updateCategoryOptions(newCategory) {
-  const lowerCaseOptions = Array.from(categorySelect.options).map(opt => opt.value.toLowerCase());
-  if (!lowerCaseOptions.includes(newCategory.toLowerCase())) {
-    const option = document.createElement('option');
-    option.value = newCategory;
-    option.textContent = newCategory;
-    categorySelect.appendChild(option);
-  }
-}
-
-newQuoteBtn.addEventListener('click', showRandomQuote);
-
-showRandomQuote();
-
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
