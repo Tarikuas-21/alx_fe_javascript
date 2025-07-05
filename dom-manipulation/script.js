@@ -25,5 +25,14 @@ function createAddQuoteForm() {
         alert("Please fill in both fields.");
     }
 }
+function updateCategoryOptions(newCategory) {
+  const lowerCaseOptions = Array.from(categorySelect.options).map(opt => opt.value.toLowerCase());
+  if (!lowerCaseOptions.includes(newCategory.toLowerCase())) {
+    const option = document.createElement('option');
+    option.value = newCategory;
+    option.textContent = newCategory;
+    categorySelect.appendChild(option);
+  }
+}
 
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
