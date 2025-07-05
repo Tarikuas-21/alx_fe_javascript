@@ -65,7 +65,7 @@ function populateCategories() {
     });
 }
 
-function filterByCategory(quotes, category) {
+function selectedCategory(quotes, category) {
     return category === 'all' ? quotes : quotes.filter(quote => quote.category === category);
 }
 
