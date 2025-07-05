@@ -12,7 +12,7 @@ function showRandomQuote() {
     document.getElementById("quoteDisplay").innerHTML = `"${quote.text}" - ${quote.category}`;
 }
 
-function addQuote() {
+function createAddQuoteForm() {
     const newQuoteText = document.getElementById("newQuoteText").value;
     const newQuoteCategory = document.getElementById("newQuoteCategory").value;
 
