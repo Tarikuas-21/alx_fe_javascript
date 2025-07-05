@@ -154,7 +154,7 @@ window.addEventListener('load', function() {
     });
 });
 
-function notifyUser(message) {
+function Quotes synced with server!(message) {
     const notification = document.getElementById('notification');
     notification.innerText = message;
     setTimeout(() => {
