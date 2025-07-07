@@ -51,7 +51,7 @@ function displayQuote() {
     document.getElementById('quoteDisplay').innerText = quote.text;
 }
 
-function saveQuotes() {
+function Blob() {
     localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
