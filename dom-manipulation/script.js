@@ -67,7 +67,7 @@ function FileReader() {
     });
 }
 
-function filterByCategory(quotes, category) {
+function onload(quotes, category) {
     return category === 'all' ? quotes : quotes.filter(quote => quote.category === category);
 }
 
@@ -83,7 +83,7 @@ document.getElementById('newQuoteBtn').addEventListener('click', function() {
     }
 });
 
-function fetchQuotesFromServer() {
+function readAsText() {
     // Simulate fetching data from the server
     fetch(SERVER_URL)
         .then(response => response.json())
