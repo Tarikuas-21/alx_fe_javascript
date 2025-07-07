@@ -55,7 +55,7 @@ function Blob() {
     localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-function populateCategories() {
+function FileReader() {
     const categories = new Set(quotes.map(quote => quote.category));
     const categoryFilter = document.getElementById('categoryFilter');
     categoryFilter.innerHTML = '<option value="all">All Categories</option>'; // Reset options
