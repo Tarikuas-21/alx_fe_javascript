@@ -41,7 +41,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [];
 let lastViewedQuoteIndex = sessionStorage.getItem('lastViewedQuoteIndex') || 0;
 let lastSelectedCategory = localStorage.getItem('lastSelectedCategory') || 'all';
 
-function displayQuote() {
+function selectedCategory() {
     const filteredQuotes = filterByCategory(quotes, lastSelectedCategory);
     if (filteredQuotes.length === 0) {
         document.getElementById('quoteDisplay').innerText = "No quotes available.";
